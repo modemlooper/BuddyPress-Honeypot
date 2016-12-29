@@ -40,8 +40,8 @@ class pjbp_honeypot {
 	 * change these via filters if you
 	 * start getting spam registrations
 	 */
-	CONST BPPJ_HONEYPOT_NAME	= 'oh_no_you_dint';
-	CONST BPPJ_HONEYPOT_ID		= 'sucka';
+	const BPPJ_HONEYPOT_NAME	= 'oh_no_you_dint';
+	const BPPJ_HONEYPOT_ID		= 'sucka';
 
 	function __construct() {
 		add_action( 'bp_after_signup_profile_fields', array( &$this, 'add_honeypot' ) );
@@ -57,9 +57,9 @@ class pjbp_honeypot {
 	 * @filter bppj_honeypot_id
 	 */
 	function add_honeypot() {
-		
+
 		echo '<div style="display: none;">';
-		echo '<input type="text" name="'.apply_filters( 'bppj_honeypot_name', self::BPPJ_HONEYPOT_NAME ).'" id="'.apply_filters( 'bppj_honeypot_id', self::BPPJ_HONEYPOT_ID ).'" />';
+		echo '<input type="text" name="' . apply_filters( 'bppj_honeypot_name', self::BPPJ_HONEYPOT_NAME ) . '" id="' . apply_filters( 'bppj_honeypot_id', self::BPPJ_HONEYPOT_ID ) . '" />';
 		echo '</div>';
 	}
 
@@ -75,9 +75,12 @@ class pjbp_honeypot {
 
 		$bppj_honeypot_name = apply_filters( 'bppj_honeypot_name', self::BPPJ_HONEYPOT_NAME );
 
-		if( isset( $_POST[$bppj_honeypot_name] ) && !empty( $_POST[$bppj_honeypot_name] ) )
+		if ( isset( $_POST[ $bppj_honeypot_name ] ) && ! empty( $_POST[ $bppj_honeypot_name ] ) ) {
 			$result['errors']->add( 'pjbp_honeypot', apply_filters( 'bppj_honeypot_fail_message', __( "You're totally a spammer. Go somewhere else with your spammy ways." ) ) );
-		
+			wp_safe_redirect( home_url() );
+			exit();
+		}
+
 		return $result;
 	}
 
